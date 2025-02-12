@@ -51,60 +51,79 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Navbar */}
-      <nav className={`fixed w-full top-0 z-50 ${isMenuOpen ? 'bg-gray-900 text-white' : 'bg-white/90'} backdrop-blur-lg shadow-sm transition-colors duration-300`}>
+      <nav className={`fixed w-full top-0 z-50 ${isMenuOpen ? 'bg-gray-900 text-white' : 'bg-white/90'} backdrop-blur-lg shadow-sm transition-all duration-300`}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <div className="flex-shrink-0">
+            <motion.div 
+              className="flex-shrink-0"
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
               <img
                 src="https://placehold.co/100x100?text=Logo"
                 alt="Logo"
                 className="h-12 w-12 rounded-full border-2 border-gold object-cover"
               />
-            </div>
+            </motion.div>
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#about" className="hover:text-gold transition-colors">من نحن</a>
-              <a href="#services" className="hover:text-gold transition-colors">خدماتنا</a>
-              <a href="#testimonials" className="hover:text-gold transition-colors">آراء العملاء</a>
-              <a href="#contact" className="hover:text-gold transition-colors">اتصل بنا</a>
+              {["about", "services", "testimonials", "contact"].map((item, index) => (
+                <motion.a
+                  key={item}
+                  href={`#${item}`}
+                  className="hover:text-gold transition-colors"
+                  whileHover={{ scale: 1.1 }}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                >
+                  {item === "about" && "من نحن"}
+                  {item === "services" && "خدماتنا"}
+                  {item === "testimonials" && "آراء العملاء"}
+                  {item === "contact" && "اتصل بنا"}
+                </motion.a>
+              ))}
             </div>
 
             {/* Language Switcher */}
             <div className="hidden md:flex items-center space-x-2">
-              <button
-                onClick={() => setCurrentLang('ar')}
-                className={`px-2 py-1 rounded ${currentLang === 'ar' ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
-              >
-                العربية
-              </button>
-              <button
-                onClick={() => setCurrentLang('fr')}
-                className={`px-2 py-1 rounded ${currentLang === 'fr' ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
-              >
-                Français
-              </button>
-              <button
-                onClick={() => setCurrentLang('en')}
-                className={`px-2 py-1 rounded ${currentLang === 'en' ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
-              >
-                English
-              </button>
+              {["ar", "fr", "en"].map((lang, index) => (
+                <motion.button
+                  key={lang}
+                  onClick={() => setCurrentLang(lang)}
+                  className={`px-2 py-1 rounded ${currentLang === lang ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                >
+                  {lang === "ar" ? "العربية" : lang === "fr" ? "Français" : "English"}
+                </motion.button>
+              ))}
             </div>
 
             {/* Mobile menu button */}
-            <button
+            <motion.button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="md:hidden rounded-lg p-2 hover:bg-gray-800 transition-colors"
+              whileTap={{ scale: 0.9 }}
             >
               <Menu className="h-6 w-6" />
-            </button>
+            </motion.button>
           </div>
 
           {/* Mobile Menu */}
           {isMenuOpen && (
-            <div className="md:hidden py-4">
+            <motion.div
+              className="md:hidden py-4"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+            >
               <div className="flex flex-col space-y-4">
                 <a href="#about" className="hover:text-gold transition-colors">من نحن</a>
                 <a href="#services" className="hover:text-gold transition-colors">خدماتنا</a>
@@ -133,7 +152,7 @@ const Index = () => {
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           )}
         </div>
       </nav>
@@ -142,7 +161,10 @@ const Index = () => {
       <section className="relative min-h-screen">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
-          <img
+          <motion.img
+            initial={{ scale: 1.1, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 1 }}
             src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
             alt="صورة المكتب"
             className="w-full h-full object-cover"
@@ -152,10 +174,15 @@ const Index = () => {
         
         {/* Content */}
         <div className="relative z-10 container mx-auto pt-32 pb-20 px-4">
-          <div className="text-center text-white">
+          <motion.div
+            className="text-center text-white"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             <h1 className="text-5xl font-bold mb-6">مكتب المحاماة المتميز</h1>
             <p className="text-xl mb-8">خبرة قانونية موثوقة</p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -180,29 +207,55 @@ const Index = () => {
 
       {/* Services Section */}
       <section className="container mx-auto py-16 px-4 bg-gray-50" id="services">
-        <h2 className="text-3xl font-bold text-center mb-12">خدماتنا</h2>
+        <motion.h2
+          className="text-3xl font-bold text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          خدماتنا
+        </motion.h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <div
+            <motion.div
               key={index}
               className="bg-gradient-to-br from-white to-gray-100 p-6 rounded-lg hover:shadow-xl transition-all duration-300 border border-gray-200"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ y: -5 }}
             >
               <div className="text-4xl mb-4">{service.icon}</div>
               <h3 className="text-xl font-bold mb-3">{service.title}</h3>
               <p className="text-gray-600">{service.description}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
 
       {/* Testimonials Section */}
       <section className="container mx-auto py-16 px-4" id="testimonials">
-        <h2 className="text-3xl font-bold text-center mb-12">آراء العملاء</h2>
+        <motion.h2
+          className="text-3xl font-bold text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          آراء العملاء
+        </motion.h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {testimonials.map((testimonial, index) => (
-            <div
+            <motion.div
               key={index}
               className="bg-gradient-to-br from-gold/5 to-gold/10 p-6 rounded-lg border border-gold/20 hover:shadow-lg transition-all duration-300"
+              initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ scale: 1.02 }}
             >
               <img
                 src={testimonial.image}
@@ -211,15 +264,30 @@ const Index = () => {
               />
               <h3 className="text-xl font-bold text-center mb-2">{testimonial.name}</h3>
               <p className="text-gray-600 text-center">{testimonial.comment}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
 
       {/* Contact Form Section */}
       <section className="container mx-auto py-16 px-4 bg-gray-50" id="contact">
-        <h2 className="text-3xl font-bold text-center mb-12">اتصل بنا</h2>
-        <form onSubmit={handleSubmit} className="max-w-lg mx-auto glass-card p-8 rounded-lg">
+        <motion.h2
+          className="text-3xl font-bold text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          اتصل بنا
+        </motion.h2>
+        <motion.form
+          onSubmit={handleSubmit}
+          className="max-w-lg mx-auto glass-card p-8 rounded-lg"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           <div className="mb-6">
             <label className="block text-gray-700 mb-2">الاسم</label>
             <input
@@ -265,7 +333,7 @@ const Index = () => {
           >
             إرسال
           </button>
-        </form>
+        </motion.form>
       </section>
 
       {/* Footer */}
@@ -300,16 +368,21 @@ const Index = () => {
       </footer>
 
       {/* WhatsApp Button */}
-      <a
+      <motion.a
         href="https://wa.me/966XXXXXXXXX"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 left-6 bg-[#25D366] hover:bg-[#128C7E] text-white p-4 rounded-full shadow-lg transition-colors"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
       >
         <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.64 15.14C16.46 15.64 15.72 16.1 15.22 16.22C14.72 16.34 14.08 16.4 11.94 15.4C9.8 14.4 8.4 12.22 8.28 12.04C8.16 11.86 7.28 10.68 7.28 9.44C7.28 8.2 7.88 7.64 8.12 7.34C8.36 7.04 8.66 6.98 8.84 6.98C9.02 6.98 9.2 6.98 9.38 7C9.56 7.02 9.8 6.94 10.04 7.52C10.28 8.1 10.86 9.34 10.92 9.46C10.98 9.58 11.02 9.72 10.94 9.88C10.86 10.04 10.82 10.14 10.7 10.28C10.58 10.42 10.44 10.6 10.34 10.7C10.22 10.82 10.1 10.96 10.24 11.2C10.38 11.44 10.86 12.24 11.58 12.88C12.5 13.7 13.26 13.98 13.5 14.1C13.74 14.22 13.88 14.2 14.02 14.04C14.16 13.88 14.62 13.34 14.78 13.1C14.94 12.86 15.1 12.9 15.32 12.98C15.54 13.06 16.78 13.68 17.02 13.8C17.26 13.92 17.42 13.98 17.48 14.08C17.54 14.18 17.54 14.64 17.36 15.14H16.64Z"/>
         </svg>
-      </a>
+      </motion.a>
     </div>
   );
 };
