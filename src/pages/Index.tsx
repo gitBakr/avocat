@@ -1,9 +1,11 @@
 
 import { useState } from "react";
-import { WhatsappIcon } from "lucide-react";
+import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
 
 const Index = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [currentLang, setCurrentLang] = useState('ar');
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -44,17 +46,113 @@ const Index = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
     console.log(formData);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      {/* Hero Section */}
-      <section className="container mx-auto py-20 px-4">
-        <div className="text-center">
-          <h1 className="text-5xl font-bold mb-6">مكتب المحاماة المتميز</h1>
-          <p className="text-xl text-gray-600 mb-8">خبرة قانونية موثوقة</p>
+      {/* Navbar */}
+      <nav className="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-lg shadow-sm">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <img
+                src="https://placehold.co/200x50?text=Logo"
+                alt="Logo"
+                className="h-8"
+              />
+            </div>
+
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center space-x-8">
+              <a href="#about" className="hover:text-gold transition-colors">من نحن</a>
+              <a href="#services" className="hover:text-gold transition-colors">خدماتنا</a>
+              <a href="#testimonials" className="hover:text-gold transition-colors">آراء العملاء</a>
+              <a href="#contact" className="hover:text-gold transition-colors">اتصل بنا</a>
+            </div>
+
+            {/* Language Switcher */}
+            <div className="hidden md:flex items-center space-x-2">
+              <button
+                onClick={() => setCurrentLang('ar')}
+                className={`px-2 py-1 rounded ${currentLang === 'ar' ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
+              >
+                العربية
+              </button>
+              <button
+                onClick={() => setCurrentLang('fr')}
+                className={`px-2 py-1 rounded ${currentLang === 'fr' ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
+              >
+                Français
+              </button>
+              <button
+                onClick={() => setCurrentLang('en')}
+                className={`px-2 py-1 rounded ${currentLang === 'en' ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
+              >
+                English
+              </button>
+            </div>
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden rounded-lg p-2 hover:bg-gray-100 transition-colors"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+          </div>
+
+          {/* Mobile Menu */}
+          {isMenuOpen && (
+            <div className="md:hidden py-4">
+              <div className="flex flex-col space-y-4">
+                <a href="#about" className="hover:text-gold transition-colors">من نحن</a>
+                <a href="#services" className="hover:text-gold transition-colors">خدماتنا</a>
+                <a href="#testimonials" className="hover:text-gold transition-colors">آراء العملاء</a>
+                <a href="#contact" className="hover:text-gold transition-colors">اتصل بنا</a>
+                
+                {/* Mobile Language Switcher */}
+                <div className="flex space-x-2 pt-4 border-t">
+                  <button
+                    onClick={() => setCurrentLang('ar')}
+                    className={`px-2 py-1 rounded ${currentLang === 'ar' ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
+                  >
+                    العربية
+                  </button>
+                  <button
+                    onClick={() => setCurrentLang('fr')}
+                    className={`px-2 py-1 rounded ${currentLang === 'fr' ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
+                  >
+                    Français
+                  </button>
+                  <button
+                    onClick={() => setCurrentLang('en')}
+                    className={`px-2 py-1 rounded ${currentLang === 'en' ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
+                  >
+                    English
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </nav>
+
+      {/* Hero Section with Image */}
+      <section className="relative container mx-auto pt-32 pb-20 px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div className="text-right">
+            <h1 className="text-5xl font-bold mb-6">مكتب المحاماة المتميز</h1>
+            <p className="text-xl text-gray-600 mb-8">خبرة قانونية موثوقة</p>
+          </div>
+          <div className="glass-card rounded-lg overflow-hidden">
+            <img
+              src="https://images.unsplash.com/photo-1496307653780-42ee777d4833"
+              alt="صورة المكتب"
+              className="w-full h-[400px] object-cover"
+            />
+          </div>
         </div>
       </section>
 
