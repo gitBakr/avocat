@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
@@ -52,7 +51,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Navbar */}
-      <nav className="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-lg shadow-sm">
+      <nav className={`fixed w-full top-0 z-50 ${isMenuOpen ? 'bg-gray-900 text-white' : 'bg-white/90'} backdrop-blur-lg shadow-sm transition-colors duration-300`}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
@@ -97,7 +96,7 @@ const Index = () => {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden rounded-lg p-2 hover:bg-gray-100 transition-colors"
+              className="md:hidden rounded-lg p-2 hover:bg-gray-800 transition-colors"
             >
               <Menu className="h-6 w-6" />
             </button>
@@ -113,7 +112,7 @@ const Index = () => {
                 <a href="#contact" className="hover:text-gold transition-colors">اتصل بنا</a>
                 
                 {/* Mobile Language Switcher */}
-                <div className="flex space-x-2 pt-4 border-t">
+                <div className="flex space-x-2 pt-4 border-t border-gray-700">
                   <button
                     onClick={() => setCurrentLang('ar')}
                     className={`px-2 py-1 rounded ${currentLang === 'ar' ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
@@ -186,7 +185,7 @@ const Index = () => {
           {services.map((service, index) => (
             <div
               key={index}
-              className="glass-card p-6 rounded-lg hover:shadow-xl transition-all duration-300"
+              className="bg-gradient-to-br from-white to-gray-100 p-6 rounded-lg hover:shadow-xl transition-all duration-300 border border-gray-200"
             >
               <div className="text-4xl mb-4">{service.icon}</div>
               <h3 className="text-xl font-bold mb-3">{service.title}</h3>
@@ -203,7 +202,7 @@ const Index = () => {
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="glass-card p-6 rounded-lg"
+              className="bg-gradient-to-br from-gold/5 to-gold/10 p-6 rounded-lg border border-gold/20 hover:shadow-lg transition-all duration-300"
             >
               <img
                 src={testimonial.image}
@@ -275,8 +274,8 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <h3 className="text-xl font-bold mb-4">تواصل معنا</h3>
-              <p className="mb-2">الرياض، المملكة العربية السعودية</p>
-              <p className="mb-2">هاتف: 966-XX-XXXXXXX+</p>
+              <p className="mb-2">تطاوين، تونس</p>
+              <p className="mb-2">هاتف: 216-XX-XXXXXX+</p>
               <p>البريد الإلكتروني: info@lawfirm.com</p>
             </div>
             <div>
