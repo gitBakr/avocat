@@ -58,9 +58,9 @@ const Index = () => {
             {/* Logo */}
             <div className="flex-shrink-0">
               <img
-                src="https://placehold.co/200x50?text=Logo"
+                src="https://placehold.co/100x100?text=Logo"
                 alt="Logo"
-                className="h-8"
+                className="h-12 w-12 rounded-full border-2 border-gold object-cover"
               />
             </div>
 
@@ -140,18 +140,22 @@ const Index = () => {
       </nav>
 
       {/* Hero Section with Image */}
-      <section className="relative container mx-auto pt-32 pb-20 px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="text-right">
+      <section className="relative min-h-screen">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+            alt="صورة المكتب"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/50"></div>
+        </div>
+        
+        {/* Content */}
+        <div className="relative z-10 container mx-auto pt-32 pb-20 px-4">
+          <div className="text-center text-white">
             <h1 className="text-5xl font-bold mb-6">مكتب المحاماة المتميز</h1>
-            <p className="text-xl text-gray-600 mb-8">خبرة قانونية موثوقة</p>
-          </div>
-          <div className="glass-card rounded-lg overflow-hidden">
-            <img
-              src="https://images.unsplash.com/photo-1496307653780-42ee777d4833"
-              alt="صورة المكتب"
-              className="w-full h-[400px] object-cover"
-            />
+            <p className="text-xl mb-8">خبرة قانونية موثوقة</p>
           </div>
         </div>
       </section>
