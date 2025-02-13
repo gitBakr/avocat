@@ -157,7 +157,7 @@ const Index = () => {
         </div>
       </nav>
 
-      {/* Hero Section with Image */}
+      {/* Hero Section */}
       <section className="relative min-h-screen">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
@@ -165,11 +165,11 @@ const Index = () => {
             initial={{ scale: 1.1, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1 }}
-            src="/images/hero.jpg"
+            src="/images/av1.jpg"
             alt="مكتب المحاماة"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-black/50"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/40"></div>
         </div>
         
         {/* Content */}
