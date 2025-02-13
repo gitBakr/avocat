@@ -61,8 +61,8 @@ const Index = () => {
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               <img
-                src="https://placehold.co/100x100?text=Logo"
-                alt="Logo"
+                src="/images/sadok-farhat.jpg"
+                alt="Maître Sadok Farhat Moussa"
                 className="h-12 w-12 rounded-full border-2 border-gold object-cover"
               />
             </motion.div>
@@ -342,9 +342,35 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <h3 className="text-xl font-bold mb-4">تواصل معنا</h3>
-              <p className="mb-2">تطاوين، تونس</p>
-              <p className="mb-2">هاتف: 216-XX-XXXXXX+</p>
-              <p>البريد الإلكتروني: info@lawfirm.com</p>
+              <p className="mb-2 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>20 نهج الهادي شاكر، تطاوين 3200</span>
+              </p>
+              <p className="mb-2 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <span>هاتف:</span>
+                <span dir="ltr">
+                  <a href="tel:+21648343898" className="hover:text-gold transition-colors">
+                    +216 48 343 898
+                  </a>
+                </span>
+              </p>
+              <p className="mb-2 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <span>البريد الإلكتروني:</span>
+                <span dir="ltr">
+                  <a href="mailto:contact@sadokfarhat-avocat.tn" className="hover:text-gold transition-colors">
+                    contact@sadokfarhat-avocat.tn
+                  </a>
+                </span>
+              </p>
             </div>
             <div>
               <h3 className="text-xl font-bold mb-4">روابط سريعة</h3>
@@ -362,14 +388,14 @@ const Index = () => {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-            <p>© 2024 مكتب المحاماة. جميع الحقوق محفوظة</p>
+            <p>© 2024 مكتب المحاماة الأستاذ الصادق فرحات موسى. جميع الحقوق محفوظة</p>
           </div>
         </div>
       </footer>
 
       {/* WhatsApp Button */}
       <motion.a
-        href="https://wa.me/966XXXXXXXXX"
+        href="https://wa.me/21648343898"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 left-6 bg-[#25D366] hover:bg-[#128C7E] text-white p-4 rounded-full shadow-lg transition-colors"
