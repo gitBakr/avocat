@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
+import { format } from 'date-fns';
+import { ar } from 'date-fns/locale';
 
 const Index = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,6 +13,8 @@ const Index = () => {
     phone: "",
     message: "",
   });
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string>('');
 
   const services = [
     {
@@ -48,28 +52,65 @@ const Index = () => {
     console.log(formData);
   };
 
+  const getAvailableTimeSlots = (date: Date) => {
+    const dayOfWeek = date.getDay();
+    let slots = [];
+    
+    // Vendredi (5)
+    if (dayOfWeek === 5) {
+      // Matin: 9h-12h
+      for (let hour = 9; hour < 12; hour++) {
+        slots.push(`${hour}:00`);
+        slots.push(`${hour}:30`);
+      }
+      // Après-midi: 15h-20h
+      for (let hour = 15; hour < 20; hour++) {
+        slots.push(`${hour}:00`);
+        slots.push(`${hour}:30`);
+      }
+    }
+    // Dimanche (0) - Fermé
+    else if (dayOfWeek === 0) {
+      return [];
+    }
+    // Autres jours
+    else {
+      for (let hour = 9; hour < 20; hour++) {
+        slots.push(`${hour}:00`);
+        slots.push(`${hour}:30`);
+      }
+    }
+    
+    return slots;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Navbar */}
       <nav className={`fixed w-full top-0 z-50 ${isMenuOpen ? 'bg-gray-900 text-white' : 'bg-white/90'} backdrop-blur-lg shadow-sm transition-all duration-300`}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <motion.div 
-              className="flex-shrink-0"
-              whileHover={{ scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              <img
-                src="/images/sadok-farhat.jpg"
-                alt="Maître Sadok Farhat Moussa"
-                className="h-12 w-12 rounded-full border-2 border-gold object-cover"
-              />
-            </motion.div>
+            {/* Logo and Name */}
+            <div className="flex items-center gap-3">
+              <motion.div 
+                className="flex-shrink-0"
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                <img
+                  src="/images/sadok-farhat.jpg"
+                  alt="Maître Sadok Farhat Moussa"
+                  className="h-12 w-12 rounded-full border-2 border-gold object-cover"
+                />
+              </motion.div>
+              <div className="text-lg font-bold">
+                الأستاذ الصادق فرحات موسى
+              </div>
+            </div>
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-8">
-              {["about", "services", "testimonials", "contact"].map((item, index) => (
+              {["about", "services", "testimonials", "faq", "contact"].map((item, index) => (
                 <motion.a
                   key={item}
                   href={`#${item}`}
@@ -82,6 +123,7 @@ const Index = () => {
                   {item === "about" && "من نحن"}
                   {item === "services" && "خدماتنا"}
                   {item === "testimonials" && "آراء العملاء"}
+                  {item === "faq" && "الأسئلة الشائعة"}
                   {item === "contact" && "اتصل بنا"}
                 </motion.a>
               ))}
@@ -128,6 +170,7 @@ const Index = () => {
                 <a href="#about" className="hover:text-gold transition-colors">من نحن</a>
                 <a href="#services" className="hover:text-gold transition-colors">خدماتنا</a>
                 <a href="#testimonials" className="hover:text-gold transition-colors">آراء العملاء</a>
+                <a href="#faq" className="hover:text-gold transition-colors">الأسئلة الشائعة</a>
                 <a href="#contact" className="hover:text-gold transition-colors">اتصل بنا</a>
                 
                 {/* Mobile Language Switcher */}
@@ -165,23 +208,36 @@ const Index = () => {
             initial={{ scale: 1.1, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1 }}
-            src="/images/av1.jpg"
+            src="/images/hero-bg.jpg"
             alt="مكتب المحاماة"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-[center_top]"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
         </div>
         
         {/* Content */}
-        <div className="relative z-10 container mx-auto pt-32 pb-20 px-4">
+        <div className="relative z-10 container mx-auto px-4 h-screen flex items-end pb-20">
           <motion.div
-            className="text-center text-white"
+            className="text-white w-full"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <h1 className="text-5xl font-bold mb-6">مكتب المحاماة المتميز</h1>
-            <p className="text-xl mb-8">خبرة قانونية موثوقة</p>
+            <h1 className="text-5xl font-bold mb-6 text-center text-gold">مكتب المحاماة المتميز</h1>
+            <p className="text-xl mb-8 text-center">خبرة قانونية موثوقة</p>
+            <motion.div
+              className="flex justify-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              <a
+                href="#appointment"
+                className="bg-gold hover:bg-gold-hover text-white font-bold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
+              >
+                احجز موعدك الآن
+              </a>
+            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -192,22 +248,19 @@ const Index = () => {
           <div className="slide-up">
             <h2 className="text-3xl font-bold mb-6">من نحن</h2>
             <p className="text-gray-600 leading-relaxed mb-6">
-              نحن مكتب محاماة رائد يقدم خدمات قانونية شاملة بأعلى معايير الجودة والاحترافية. يضم فريقنا نخبة من المحامين ذوي الخبرة.
+              نحن مكتب محاماة رائد يقدم خدمات قانونية شاملة بأعلى معايير الجودة والاحترافية. يضم فريقنا نخبة من المحامين ذوي الخبرة والكفاءة العالية.
+              نسعى دائماً لتقديم حلول قانونية مبتكرة وفعالة لعملائنا، مع الحفاظ على أعلى معايير النزاهة والمهنية.
             </p>
-            {/* Image supplémentaire */}
-            <div className="glass-card rounded-lg overflow-hidden mb-6">
-              <img
-                src="/images/av1.jpg"
-                alt="مكتب المحاماة"
-                className="w-full h-[200px] object-cover"
-              />
-            </div>
+            <p className="text-gray-600 leading-relaxed mb-6">
+              يتميز مكتبنا بخبرة واسعة في مختلف مجالات القانون، ونفخر بسجلنا الحافل في تمثيل عملائنا أمام جميع المحاكم التونسية.
+              نؤمن بأهمية التواصل المستمر مع عملائنا وتقديم المشورة القانونية الواضحة والدقيقة.
+            </p>
           </div>
           <div className="glass-card rounded-lg overflow-hidden">
             <img
-              src="/images/about.jpg"
+              src="/images/av2.jpg"
               alt="مكتب المحاماة الأستاذ الصادق فرحات موسى"
-              className="w-full h-[400px] object-cover"
+              className="w-full h-[600px] object-cover"
             />
           </div>
         </div>
@@ -274,6 +327,74 @@ const Index = () => {
               <p className="text-gray-600 text-center">{testimonial.comment}</p>
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* Appointment Section */}
+      <section className="container mx-auto py-16 px-4 bg-white" id="appointment">
+        <motion.h2
+          className="text-3xl font-bold text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          حجز موعد
+        </motion.h2>
+        
+        <div className="max-w-lg mx-auto glass-card p-8 rounded-lg">
+          <div className="mb-8">
+            <h3 className="text-xl font-bold mb-4 text-right">ساعات العمل:</h3>
+            <ul className="space-y-2 text-right">
+              <li>من الإثنين إلى الخميس: 9:00 - 20:00</li>
+              <li>الجمعة: 9:00 - 12:00 | 15:00 - 20:00</li>
+              <li>السبت: 9:00 - 20:00</li>
+              <li>الأحد: مغلق</li>
+            </ul>
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-gray-700 mb-2">اختر التاريخ</label>
+            <input
+              type="date"
+              className="w-full p-3 border rounded-lg"
+              min={format(new Date(), 'yyyy-MM-dd')}
+              onChange={(e) => setSelectedDate(new Date(e.target.value))}
+              required
+            />
+          </div>
+
+          {selectedDate && (
+            <div className="mb-6">
+              <label className="block text-gray-700 mb-2">اختر الوقت</label>
+              <select
+                className="w-full p-3 border rounded-lg"
+                onChange={(e) => setSelectedTime(e.target.value)}
+                required
+              >
+                <option value="">اختر وقتاً</option>
+                {getAvailableTimeSlots(selectedDate).map((time) => (
+                  <option key={time} value={time}>
+                    {time}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {selectedDate && selectedTime && (
+            <div className="text-center">
+              <div className="text-green-600 mb-6">
+                موعدك محجوز ليوم {format(selectedDate, 'dd/MM/yyyy', { locale: ar })} على الساعة {selectedTime}
+              </div>
+              <a
+                href="#contact"
+                className="bg-gold hover:bg-gold-hover text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block"
+              >
+                أكمل معلومات الاتصال
+              </a>
+            </div>
+          )}
         </div>
       </section>
 
@@ -344,6 +465,55 @@ const Index = () => {
         </motion.form>
       </section>
 
+      {/* FAQ Section */}
+      <section className="container mx-auto py-16 px-4 bg-gray-50" id="faq">
+        <motion.h2
+          className="text-3xl font-bold text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          الأسئلة الشائعة
+        </motion.h2>
+        <div className="max-w-3xl mx-auto space-y-6">
+          {[
+            {
+              question: "ما هي الوثائق المطلوبة لرفع قضية طلاق في تونس؟",
+              answer: "الوثائق الأساسية تشمل: عقد الزواج الأصلي، نسخة من بطاقة التعريف الوطنية للزوجين، مضمون ولادة حديث للزوجين، شهادة إقامة، ومحضر الصلح من المحكمة."
+            },
+            {
+              question: "كم تستغرق إجراءات نقل ملكية عقار في تونس؟",
+              answer: "تستغرق إجراءات نقل الملكية عادةً من شهر إلى ثلاثة أشهر، وتشمل التحقق من الوثائق، تسجيل العقد لدى القباضة المالية، والتسجيل النهائي في إدارة الملكية العقارية."
+            },
+            {
+              question: "ما هي حقوقي في حالة الفصل التعسفي من العمل؟",
+              answer: "يحق للعامل في حالة الفصل التعسفي الحصول على تعويضات تشمل: الإشعار المسبق، التعويض عن الضرر، مكافأة نهاية الخدمة، والعطل السنوية غير المستعملة."
+            },
+            {
+              question: "كيف يمكنني استرجاع مبلغ مالي من شخص رفض السداد؟",
+              answer: "يمكن اتباع عدة خطوات: أولاً محاولة الحل الودي، ثم إرسال إنذار رسمي عبر عدل منفذ، وأخيراً رفع قضية مدنية لاسترجاع المبلغ مع الفوائض القانونية."
+            },
+            {
+              question: "ما هي إجراءات تأسيس شركة في تونس؟",
+              answer: "تشمل الإجراءات: تحديد الشكل القانوني للشركة، إعداد العقد التأسيسي، فتح حساب بنكي للشركة، التسجيل في السجل التجاري، والحصول على المعرف الجبائي والإنخراط في الصندوق الوطني للضمان الإجتماعي."
+            }
+          ].map((item, index) => (
+            <motion.div
+              key={index}
+              className="bg-white rounded-lg shadow-sm p-6 border border-gray-200"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              <h3 className="text-xl font-bold mb-4 text-right">{item.question}</h3>
+              <p className="text-gray-600 leading-relaxed text-right">{item.answer}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-4">
@@ -395,8 +565,22 @@ const Index = () => {
               </div>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-            <p>© 2024 مكتب المحاماة الأستاذ الصادق فرحات موسى. جميع الحقوق محفوظة</p>
+          <div className="border-t border-gray-800 mt-8 pt-8">
+            <p className="text-center mb-2">© 2024 مكتب المحاماة الأستاذ الصادق فرحات موسى. جميع الحقوق محفوظة</p>
+            <p className="text-center text-sm text-gray-400">
+              <span className="ml-1">تم تطوير هذا الموقع بواسطة فريق</span>
+              <a 
+                href="mailto:contact@raouane.com" 
+                className="text-gold hover:text-gold-hover transition-colors mx-1"
+              >
+                "Raouane"
+              </a>
+              <span className="ml-1">للتواصل معنا اضغط هنا</span>
+              <br />
+              <span className="text-xs">
+                Site créé par l'équipe "Raouane" - Cliquez pour nous contacter
+              </span>
+            </p>
           </div>
         </div>
       </footer>
