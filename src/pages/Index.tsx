@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
 import { format } from 'date-fns';
 import { ar } from 'date-fns/locale';
+import i18n from '../i18n';
+import { useTranslation } from 'react-i18next';
 
 const Index = () => {
+  const { t, i18n } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState('ar');
+  const [currentLang, setCurrentLang] = useState(i18n.language || 'ar');
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,6 +18,12 @@ const Index = () => {
   });
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string>('');
+  const isRTL = i18n.language === 'ar';
+
+  useEffect(() => {
+    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+    document.documentElement.lang = i18n.language;
+  }, [isRTL, i18n.language]);
 
   const services = [
     {
@@ -84,8 +93,15 @@ const Index = () => {
     return slots;
   };
 
+  const handleLanguageChange = (lang: string) => {
+    i18n.changeLanguage(lang);
+    setCurrentLang(lang);
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    setIsMenuOpen(false);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <div className={`min-h-screen ${isRTL ? 'text-right' : 'text-left'}`}>
       {/* Navbar */}
       <nav className={`fixed w-full top-0 z-50 ${isMenuOpen ? 'bg-gray-900 text-white' : 'bg-white/90'} backdrop-blur-lg shadow-sm transition-all duration-300`}>
         <div className="container mx-auto px-4">
@@ -99,33 +115,28 @@ const Index = () => {
               >
                 <img
                   src="/images/sadok-farhat.jpg"
-                  alt="Maître Sadok Farhat Moussa"
+                  alt={t('header.lawyer_name')}
                   className="h-12 w-12 rounded-full border-2 border-gold object-cover"
                 />
               </motion.div>
-              <div className="text-lg font-bold">
-                الأستاذ الصادق فرحات موسى
+              <div className={`text-lg font-bold ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('header.lawyer_name')}
               </div>
             </div>
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-8">
-              {["about", "services", "testimonials", "faq", "appointment", "contact"].map((item, index) => (
+              {["home", "about", "services", "testimonials", "faq", "appointment", "contact"].map((item, index) => (
                 <motion.a
                   key={item}
-                  href={`#${item}`}
+                  href={item === "home" ? "#" : `#${item}`}
                   className="hover:text-gold transition-colors"
                   whileHover={{ scale: 1.1 }}
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
-                  {item === "about" && "من نحن"}
-                  {item === "services" && "خدماتنا"}
-                  {item === "testimonials" && "آراء العملاء"}
-                  {item === "faq" && "الأسئلة الشائعة"}
-                  {item === "appointment" && "حجز موعد"}
-                  {item === "contact" && "اتصل بنا"}
+                  {t(`nav.${item}`)}
                 </motion.a>
               ))}
             </div>
@@ -135,7 +146,7 @@ const Index = () => {
               {["ar", "fr", "en"].map((lang, index) => (
                 <motion.button
                   key={lang}
-                  onClick={() => setCurrentLang(lang)}
+                  onClick={() => handleLanguageChange(lang)}
                   className={`px-2 py-1 rounded ${currentLang === lang ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -169,73 +180,71 @@ const Index = () => {
             >
               <div className="flex flex-col space-y-4">
                 <a 
+                  href="#" 
+                  className="hover:text-gold transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {t('nav.home')}
+                </a>
+                <a 
                   href="#about" 
                   className="hover:text-gold transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  من نحن
+                  {t('nav.about')}
                 </a>
                 <a 
                   href="#services" 
                   className="hover:text-gold transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  خدماتنا
+                  {t('nav.services')}
                 </a>
                 <a 
                   href="#testimonials" 
                   className="hover:text-gold transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  آراء العملاء
+                  {t('nav.testimonials')}
                 </a>
                 <a 
                   href="#faq" 
                   className="hover:text-gold transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  الأسئلة الشائعة
+                  {t('nav.faq')}
                 </a>
                 <a 
                   href="#appointment" 
                   className="hover:text-gold transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  حجز موعد
+                  {t('nav.appointment')}
                 </a>
                 <a 
                   href="#contact" 
                   className="hover:text-gold transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  اتصل بنا
+                  {t('nav.contact')}
                 </a>
                 
                 {/* Mobile Language Switcher */}
                 <div className="flex space-x-2 pt-4 border-t border-gray-700">
                   <button
-                    onClick={() => {
-                      setCurrentLang('ar');
-                      setIsMenuOpen(false);
-                    }}
+                    onClick={() => handleLanguageChange('ar')}
                     className={`px-2 py-1 rounded ${currentLang === 'ar' ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
                   >
                     العربية
                   </button>
                   <button
-                    onClick={() => {
-                      setCurrentLang('fr');
-                      setIsMenuOpen(false);
-                    }}
+                    onClick={() => handleLanguageChange('fr')}
                     className={`px-2 py-1 rounded ${currentLang === 'fr' ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
                   >
                     Français
                   </button>
                   <button
-                    onClick={() => {
-                      setCurrentLang('en');
-                      setIsMenuOpen(false);
-                    }}
+                    onClick={() => handleLanguageChange('en')}
                     className={`px-2 py-1 rounded ${currentLang === 'en' ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
                   >
                     English
@@ -270,8 +279,12 @@ const Index = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <h1 className="text-5xl font-bold mb-6 text-center text-gold">مكتب المحاماة المتميز</h1>
-            <p className="text-xl mb-8 text-center">خبرة قانونية موثوقة</p>
+            <h1 className="text-5xl font-bold mb-6 text-center text-gold">
+              {t('hero.title')}
+            </h1>
+            <p className="text-xl mb-8 text-center">
+              {t('hero.subtitle')}
+            </p>
             <motion.div
               className="flex justify-center"
               initial={{ opacity: 0, y: 20 }}
@@ -282,7 +295,7 @@ const Index = () => {
                 href="#appointment"
                 className="bg-gold hover:bg-gold-hover text-white font-bold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
               >
-                احجز موعدك الآن
+                {t('hero.cta')}
               </a>
             </motion.div>
           </motion.div>
@@ -293,20 +306,20 @@ const Index = () => {
       <section className="container mx-auto py-16 px-4" id="about">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="slide-up">
-            <h2 className="text-3xl font-bold mb-6">من نحن</h2>
+            <h2 className="text-3xl font-bold mb-6">
+              {t('about.title')}
+            </h2>
             <p className="text-gray-600 leading-relaxed mb-6">
-              نحن مكتب محاماة رائد يقدم خدمات قانونية شاملة بأعلى معايير الجودة والاحترافية. يضم فريقنا نخبة من المحامين ذوي الخبرة والكفاءة العالية.
-              نسعى دائماً لتقديم حلول قانونية مبتكرة وفعالة لعملائنا، مع الحفاظ على أعلى معايير النزاهة والمهنية.
+              {t('about.description1')}
             </p>
             <p className="text-gray-600 leading-relaxed mb-6">
-              يتميز مكتبنا بخبرة واسعة في مختلف مجالات القانون، ونفخر بسجلنا الحافل في تمثيل عملائنا أمام جميع المحاكم التونسية.
-              نؤمن بأهمية التواصل المستمر مع عملائنا وتقديم المشورة القانونية الواضحة والدقيقة.
+              {t('about.description2')}
             </p>
           </div>
           <div className="glass-card rounded-lg overflow-hidden">
             <img
               src="/images/av2.jpg"
-              alt="مكتب المحاماة الأستاذ الصادق فرحات موسى"
+              alt={t('about.title')}
               className="w-full h-[600px] object-cover"
             />
           </div>
@@ -322,10 +335,23 @@ const Index = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          خدماتنا
+          {t('services.title')}
         </motion.h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {services.map((service, index) => (
+          {[
+            {
+              key: 'criminal',
+              icon: "⚖️"
+            },
+            {
+              key: 'commercial',
+              icon: "💼"
+            },
+            {
+              key: 'real_estate',
+              icon: "🏢"
+            }
+          ].map((service, index) => (
             <motion.div
               key={index}
               className="bg-gray-100 rounded-lg p-6 shadow-sm border border-gray-200 hover:bg-white transition-colors duration-300"
@@ -335,8 +361,12 @@ const Index = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <div className="text-4xl mb-4 text-gold">{service.icon}</div>
-              <h3 className="text-xl font-bold mb-2">{service.title}</h3>
-              <p className="text-gray-600">{service.description}</p>
+              <h3 className="text-xl font-bold mb-2">
+                {t(`services.${service.key}.title`)}
+              </h3>
+              <p className="text-gray-600">
+                {t(`services.${service.key}.description`)}
+              </p>
             </motion.div>
           ))}
         </div>
@@ -344,63 +374,59 @@ const Index = () => {
 
       {/* Testimonials Section */}
       <section className="container mx-auto py-16 px-4" id="testimonials">
-        <motion.h2
-          className="text-3xl font-bold text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          آراء العملاء
+        <motion.h2 className="text-3xl font-bold text-center mb-12">
+          {t('testimonials.title')}
         </motion.h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <motion.div
-              key={index}
-              className="bg-gradient-to-br from-gold/5 to-gold/10 p-6 rounded-lg border border-gold/20 hover:shadow-lg transition-all duration-300"
-              initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ scale: 1.02 }}
-            >
-              <img
-                src={testimonial.image}
-                alt={testimonial.name}
-                className="w-16 h-16 rounded-full mx-auto mb-4"
-              />
-              <h3 className="text-xl font-bold text-center mb-2">{testimonial.name}</h3>
-              <p className="text-gray-600 text-center">{testimonial.comment}</p>
-            </motion.div>
-          ))}
+          {Array.isArray(t('testimonials.clients', { returnObjects: true })) ? 
+            t('testimonials.clients', { returnObjects: true }).map((testimonial: any, index: number) => (
+              <motion.div
+                key={index}
+                className="bg-gradient-to-br from-gold/5 to-gold/10 p-6 rounded-lg"
+              >
+                <h3 className="text-xl font-bold text-center mb-2">{testimonial.name}</h3>
+                <p className="text-gray-600 text-center">{testimonial.comment}</p>
+              </motion.div>
+            ))
+            : null
+          }
         </div>
       </section>
 
       {/* Appointment Section */}
       <section className="container mx-auto py-16 px-4 bg-white" id="appointment">
-        <motion.h2
-          className="text-3xl font-bold text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          حجز موعد
+        <motion.h2 className="text-3xl font-bold text-center mb-12">
+          {t('appointment.title')}
         </motion.h2>
-        
         <div className="max-w-lg mx-auto glass-card p-8 rounded-lg">
           <div className="mb-8">
-            <h3 className="text-xl font-bold mb-4 text-right">ساعات العمل:</h3>
-            <ul className="space-y-2 text-right">
-              <li>من الإثنين إلى الخميس: 9:00 - 20:00</li>
-              <li>الجمعة: 9:00 - 12:00 | 15:00 - 20:00</li>
-              <li>السبت: 9:00 - 20:00</li>
-              <li>الأحد: مغلق</li>
+            <h3 className={`text-xl font-bold mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+              {t('appointment.workingHours.title')}
+            </h3>
+            <ul className={`space-y-2 ${isRTL ? 'text-right' : 'text-left'} list-none`}>
+              <li className="flex items-center gap-2">
+                <span className="text-gold">•</span>
+                <span>{t('appointment.workingHours.weekdays')}</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-gold">•</span>
+                <span>{t('appointment.workingHours.friday')}</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-gold">•</span>
+                <span>{t('appointment.workingHours.saturday')}</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-gold">•</span>
+                <span>{t('appointment.workingHours.sunday')}</span>
+              </li>
             </ul>
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-700 mb-2">اختر التاريخ</label>
+            <label className="block text-gray-700 mb-2">
+              {t('appointment.form.dateLabel')}
+            </label>
             <input
               type="date"
               className="w-full p-3 border rounded-lg"
@@ -412,13 +438,15 @@ const Index = () => {
 
           {selectedDate && (
             <div className="mb-6">
-              <label className="block text-gray-700 mb-2">اختر الوقت</label>
+              <label className="block text-gray-700 mb-2">
+                {t('appointment.form.timeLabel')}
+              </label>
               <select
                 className="w-full p-3 border rounded-lg"
                 onChange={(e) => setSelectedTime(e.target.value)}
                 required
               >
-                <option value="">اختر وقتاً</option>
+                <option value="">{t('appointment.form.selectTime')}</option>
                 {getAvailableTimeSlots(selectedDate).map((time) => (
                   <option key={time} value={time}>
                     {time}
@@ -431,13 +459,13 @@ const Index = () => {
           {selectedDate && selectedTime && (
             <div className="text-center">
               <div className="text-green-600 mb-6">
-                موعدك محجوز ليوم {format(selectedDate, 'dd/MM/yyyy', { locale: ar })} على الساعة {selectedTime}
+                {t('appointment.form.confirmation', { date: format(selectedDate, 'dd/MM/yyyy', { locale: ar }), time: selectedTime })}
               </div>
               <a
                 href="#contact"
                 className="bg-gold hover:bg-gold-hover text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block"
               >
-                أكمل معلومات الاتصال
+                {t('appointment.form.nextStep')}
               </a>
             </div>
           )}
@@ -446,25 +474,14 @@ const Index = () => {
 
       {/* Contact Form Section */}
       <section className="container mx-auto py-16 px-4 bg-gray-50" id="contact">
-        <motion.h2
-          className="text-3xl font-bold text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          اتصل بنا
+        <motion.h2 className="text-3xl font-bold text-center mb-12">
+          {t('contact.title')}
         </motion.h2>
-        <motion.form
-          onSubmit={handleSubmit}
-          className="max-w-lg mx-auto glass-card p-8 rounded-lg"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
+        <motion.form onSubmit={handleSubmit} className="max-w-lg mx-auto glass-card p-8 rounded-lg">
           <div className="mb-6">
-            <label className="block text-gray-700 mb-2">الاسم</label>
+            <label className="block text-gray-700 mb-2">
+              {t('contact.form.name')}
+            </label>
             <input
               type="text"
               className="w-full p-3 border rounded-lg"
@@ -474,7 +491,9 @@ const Index = () => {
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 mb-2">البريد الإلكتروني</label>
+            <label className="block text-gray-700 mb-2">
+              {t('contact.form.email')}
+            </label>
             <input
               type="email"
               className="w-full p-3 border rounded-lg"
@@ -484,7 +503,9 @@ const Index = () => {
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 mb-2">الهاتف</label>
+            <label className="block text-gray-700 mb-2">
+              {t('contact.form.phone')}
+            </label>
             <input
               type="tel"
               className="w-full p-3 border rounded-lg"
@@ -494,7 +515,9 @@ const Index = () => {
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 mb-2">رسالتك</label>
+            <label className="block text-gray-700 mb-2">
+              {t('contact.form.message')}
+            </label>
             <textarea
               className="w-full p-3 border rounded-lg h-32"
               value={formData.message}
@@ -502,11 +525,8 @@ const Index = () => {
               required
             ></textarea>
           </div>
-          <button
-            type="submit"
-            className="w-full bg-gold hover:bg-gold-hover text-white font-bold py-3 px-6 rounded-lg transition-colors"
-          >
-            إرسال
+          <button type="submit" className="w-full bg-gold hover:bg-gold-hover text-white font-bold py-3 px-6 rounded-lg">
+            {t('contact.form.submit')}
           </button>
         </motion.form>
       </section>
@@ -520,43 +540,29 @@ const Index = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          الأسئلة الشائعة
+          {t('faq.title')}
         </motion.h2>
         <div className="max-w-3xl mx-auto space-y-6">
-          {[
-            {
-              question: "ما هي الوثائق المطلوبة لرفع قضية طلاق في تونس؟",
-              answer: "الوثائق الأساسية تشمل: عقد الزواج الأصلي، نسخة من بطاقة التعريف الوطنية للزوجين، مضمون ولادة حديث للزوجين، شهادة إقامة، ومحضر الصلح من المحكمة."
-            },
-            {
-              question: "كم تستغرق إجراءات نقل ملكية عقار في تونس؟",
-              answer: "تستغرق إجراءات نقل الملكية عادةً من شهر إلى ثلاثة أشهر، وتشمل التحقق من الوثائق، تسجيل العقد لدى القباضة المالية، والتسجيل النهائي في إدارة الملكية العقارية."
-            },
-            {
-              question: "ما هي حقوقي في حالة الفصل التعسفي من العمل؟",
-              answer: "يحق للعامل في حالة الفصل التعسفي الحصول على تعويضات تشمل: الإشعار المسبق، التعويض عن الضرر، مكافأة نهاية الخدمة، والعطل السنوية غير المستعملة."
-            },
-            {
-              question: "كيف يمكنني استرجاع مبلغ مالي من شخص رفض السداد؟",
-              answer: "يمكن اتباع عدة خطوات: أولاً محاولة الحل الودي، ثم إرسال إنذار رسمي عبر عدل منفذ، وأخيراً رفع قضية مدنية لاسترجاع المبلغ مع الفوائض القانونية."
-            },
-            {
-              question: "ما هي إجراءات تأسيس شركة في تونس؟",
-              answer: "تشمل الإجراءات: تحديد الشكل القانوني للشركة، إعداد العقد التأسيسي، فتح حساب بنكي للشركة، التسجيل في السجل التجاري، والحصول على المعرف الجبائي والإنخراط في الصندوق الوطني للضمان الإجتماعي."
-            }
-          ].map((item, index) => (
-            <motion.div
-              key={index}
-              className="bg-gray-100 rounded-lg shadow-sm p-6 border border-gray-200 hover:bg-white transition-colors duration-300"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <h3 className="text-xl font-bold mb-4 text-right">{item.question}</h3>
-              <p className="text-gray-600 leading-relaxed text-right">{item.answer}</p>
-            </motion.div>
-          ))}
+          {Array.isArray(t('faq.questions', { returnObjects: true })) ? 
+            t('faq.questions', { returnObjects: true }).map((item: any, index: number) => (
+              <motion.div
+                key={index}
+                className="bg-gray-100 rounded-lg shadow-sm p-6 border border-gray-200 hover:bg-white transition-colors duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <h3 className={`text-xl font-bold mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+                  {item.question}
+                </h3>
+                <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
+                  {item.answer}
+                </p>
+              </motion.div>
+            ))
+            : null
+          }
         </div>
       </section>
 
@@ -569,32 +575,34 @@ const Index = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl font-bold text-center mb-8">التحول الرقمي للمهنيين</h2>
+          <h2 className="text-3xl font-bold text-center mb-8">
+            {t('digital.title')}
+          </h2>
           
           <div className="bg-white rounded-lg shadow-lg p-8">
-            <p className="text-gray-700 leading-relaxed text-right mb-6">
-              في عصر التكنولوجيا الرقمية، أصبح وجودك على الإنترنت ضرورياً لتطوير نشاطك المهني. تلتزم جمعيتنا بمرافقة المهنيين التونسيين في تحولهم الرقمي من خلال حل متاح للجميع.
+            <p className={`text-gray-700 leading-relaxed mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+              {t('digital.intro')}
             </p>
             
             <div className="bg-gold/10 rounded-lg p-6 mb-6">
               <p className="text-gray-800 font-bold text-center text-xl mb-2">
-                30 دينار تونسي فقط في السنة
+                {t('digital.pricing.title')}
               </p>
               <p className="text-gray-600 text-center">
-                نقدم لكم فرصة إنشاء وتطوير تواجدكم على الإنترنت، مما يتيح لكم زيادة ظهوركم والوصول إلى عملاء جدد.
+                {t('digital.pricing.description')}
               </p>
             </div>
 
-            <p className="text-gray-700 leading-relaxed text-right mb-6">
-              يضع فريقنا من المتخصصين في المعلوماتية خبرتهم في خدمتكم لضمان واجهة رقمية احترافية تتناسب مع احتياجاتكم.
+            <p className={`text-gray-700 leading-relaxed mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+              {t('digital.expertise')}
             </p>
 
-            <p className="text-gray-700 leading-relaxed text-right mb-6">
-              انضموا إلى مجتمعنا المتنامي من المهنيين التونسيين الذين اختاروا بالفعل التواجد الفعال والميسور على الإنترنت.
+            <p className={`text-gray-700 leading-relaxed mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+              {t('digital.community')}
             </p>
 
             <p className="text-gold font-bold text-center text-xl">
-              معاً، نبني مستقبلكم الرقمي!
+              {t('digital.cta')}
             </p>
 
             <div className="text-center mt-8">
@@ -602,7 +610,7 @@ const Index = () => {
                 href="mailto:contact@raouane.com"
                 className="inline-flex items-center gap-2 bg-gold hover:bg-gold-hover text-white px-8 py-4 rounded-lg transition-all duration-300"
               >
-                <span>تواصل معنا للمزيد من المعلومات</span>
+                <span>{t('digital.contact')}</span>
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
                   className="h-5 w-5" 
@@ -627,7 +635,7 @@ const Index = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          موقعنا
+          {t('location.title')}
         </motion.h2>
         
         <div className="max-w-4xl mx-auto">
@@ -639,15 +647,19 @@ const Index = () => {
             transition={{ duration: 0.5 }}
           >
             <div className="p-6 text-center">
-              <h3 className="text-xl font-bold mb-4">مكتب المحاماة الأستاذ الصادق فرحات موسى</h3>
-              <p className="text-gray-600 mb-4">20 نهج الهادي شاكر، تطاوين 3200</p>
+              <h3 className="text-xl font-bold mb-4">
+                {t('location.office')}
+              </h3>
+              <p className="text-gray-600 mb-4">
+                {t('location.address')}
+              </p>
               <a 
                 href="https://www.google.com/maps/place/Tataouine/@32.9290485,10.4508956,15z"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-gold hover:bg-gold-hover text-white px-6 py-3 rounded-lg transition-all duration-300"
               >
-                <span>موقعنا في تطاوين</span>
+                <span>{t('location.viewMap')}</span>
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
                   className="h-5 w-5" 
@@ -669,96 +681,89 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className={`bg-gray-900 text-white py-12 ${isRTL ? '' : 'ltr'}`}>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <h3 className="text-xl font-bold mb-4">تواصل معنا</h3>
-              <p className="mb-2 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <div className="flex flex-col">
-                  <span>العنوان:</span>
-                  <a 
-                    href="https://www.google.com/maps/place/Tataouine/@32.9290485,10.4508956,15z"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-gold transition-colors flex items-center gap-2 mt-1 border-b border-dashed border-gold/50 pb-1"
-                  >
-                    <span>20 نهج الهادي شاكر، تطاوين 3200</span>
-                    <span className="text-gold text-sm">(اضغط لرؤية الموقع)</span>
-                    <svg 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      className="h-4 w-4 text-gold" 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
-                      stroke="currentColor"
-                    >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
-                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
-                      />
-                    </svg>
-                  </a>
-                </div>
-              </p>
-              <p className="mb-2 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                <span>هاتف:</span>
-                <span dir="ltr">
-                  <a href="tel:+21648343898" className="hover:text-gold transition-colors">
-                    +216 48 343 898
-                  </a>
-                </span>
-              </p>
-              <p className="mb-2 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <span>البريد الإلكتروني:</span>
-                <span dir="ltr">
-                  <a href="mailto:contact@sadokfarhat-avocat.tn" className="hover:text-gold transition-colors">
-                    contact@sadokfarhat-avocat.tn
-                  </a>
-                </span>
-              </p>
+            {/* Footer Contact Info */}
+            <div className={isRTL ? 'text-right' : 'text-left'}>
+              <h3 className="text-xl font-bold mb-4">
+                {t('footer.contact.title')}
+              </h3>
+              
+              {/* Address */}
+              <div className="mb-4">
+                <div className="mb-1">{t('footer.contact.address')}</div>
+                <div className="mb-1">{t('location.address')}</div>
+                <a 
+                  href="https://www.google.com/maps/place/Tataouine/@32.9290485,10.4508956,15z"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gold text-sm hover:text-gold-hover"
+                >
+                  {t('footer.contact.viewLocation')}
+                </a>
+              </div>
+
+              {/* Phone */}
+              <div className="mb-4">
+                <div className="mb-1">{t('footer.contact.phone')}</div>
+                <a href="tel:+21648343898" className="hover:text-gold">
+                  +216 48 343 898
+                </a>
+              </div>
+
+              {/* Email */}
+              <div className="mb-4">
+                <div className="mb-1">{t('footer.contact.email')}</div>
+                <a href="mailto:contact@sadokfarhat-avocat.tn" className="hover:text-gold">
+                  contact@sadokfarhat-avocat.tn
+                </a>
+              </div>
             </div>
-            <div>
-              <h3 className="text-xl font-bold mb-4">روابط سريعة</h3>
-              <ul>
-                <li className="mb-2"><a href="#about" className="hover:text-gold transition-colors">من نحن</a></li>
-                <li className="mb-2"><a href="#services" className="hover:text-gold transition-colors">خدماتنا</a></li>
-                <li><a href="#contact" className="hover:text-gold transition-colors">اتصل بنا</a></li>
+
+            {/* Quick Links */}
+            <div className={isRTL ? 'text-right' : 'text-left'}>
+              <h3 className="text-xl font-bold mb-4">{t('footer.quickLinks.title')}</h3>
+              <ul className="space-y-2">
+                <li>
+                  <a href="#about" className="hover:text-gold transition-colors">
+                    {t('footer.quickLinks.about')}
+                  </a>
+                </li>
+                <li>
+                  <a href="#services" className="hover:text-gold transition-colors">
+                    {t('footer.quickLinks.services')}
+                  </a>
+                </li>
+                <li>
+                  <a href="#contact" className="hover:text-gold transition-colors">
+                    {t('footer.quickLinks.contact')}
+                  </a>
+                </li>
               </ul>
             </div>
-            <div>
-              <h3 className="text-xl font-bold mb-4">تابعنا</h3>
+
+            {/* Follow Us */}
+            <div className={isRTL ? 'text-right' : 'text-left'}>
+              <h3 className="text-xl font-bold mb-4">{t('footer.followUs')}</h3>
               <div className="flex space-x-4">
                 {/* Social Media Icons */}
               </div>
             </div>
           </div>
+
+          {/* Copyright */}
           <div className="border-t border-gray-800 mt-8 pt-8">
-            <p className="text-center mb-2">© 2024 مكتب المحاماة الأستاذ الصادق فرحات موسى. جميع الحقوق محفوظة</p>
+            <p className="text-center mb-2">{t('footer.copyright')}</p>
             <p className="text-center text-sm text-gray-400">
-              <span className="ml-1">تم تطوير هذا الموقع بواسطة فريق</span>
+              <span>{t('footer.credits.developedBy')}</span>
               <a 
                 href="mailto:contact@raouane.com" 
                 className="text-gold hover:text-gold-hover transition-colors mx-1"
               >
                 "Raouane"
               </a>
-              <span className="ml-1">للتواصل معنا اضغط هنا</span>
-              <br />
-              <span className="text-xs">
-                Site créé par l'équipe "Raouane" - Cliquez pour nous contacter
-              </span>
+              <span>{t('footer.credits.contactUs')}</span>
             </p>
           </div>
         </div>
