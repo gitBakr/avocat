@@ -1,6 +1,6 @@
 services:
   - type: static
     name: avocat
-    buildCommand: npm install && npm run build
+    buildCommand: npm.cmd install && npm.cmd run build
     publishDir: dist
     branch: main 
