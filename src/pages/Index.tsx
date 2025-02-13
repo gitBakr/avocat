@@ -208,9 +208,9 @@ const Index = () => {
             initial={{ scale: 1.1, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1 }}
-            src="/images/hero-bg.jpg"
+            src="/images/hero-bg1.jpg"
             alt="مكتب المحاماة"
-            className="w-full h-full object-cover object-[center_top]"
+            className="w-full h-full object-cover object-[center_40%]"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
         </div>
@@ -514,6 +514,56 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Location Section */}
+      <section className="container mx-auto py-16 px-4 bg-white">
+        <motion.h2
+          className="text-3xl font-bold text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          موقعنا
+        </motion.h2>
+        
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            className="bg-white rounded-lg shadow-lg overflow-hidden"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="p-6 text-center">
+              <h3 className="text-xl font-bold mb-4">مكتب المحاماة الأستاذ الصادق فرحات موسى</h3>
+              <p className="text-gray-600 mb-4">20 نهج الهادي شاكر، تطاوين 3200</p>
+              <a 
+                href="https://www.google.com/maps/place/Tataouine/@32.9290485,10.4508956,15z"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-gold hover:bg-gold-hover text-white px-6 py-3 rounded-lg transition-all duration-300"
+              >
+                <span>موقعنا في تطاوين</span>
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-5 w-5" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" 
+                  />
+                </svg>
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-4">
@@ -521,11 +571,36 @@ const Index = () => {
             <div>
               <h3 className="text-xl font-bold mb-4">تواصل معنا</h3>
               <p className="mb-2 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span>20 نهج الهادي شاكر، تطاوين 3200</span>
+                <div className="flex flex-col">
+                  <span>العنوان:</span>
+                  <a 
+                    href="https://www.google.com/maps/place/Tataouine/@32.9290485,10.4508956,15z"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-gold transition-colors flex items-center gap-2 mt-1 border-b border-dashed border-gold/50 pb-1"
+                  >
+                    <span>20 نهج الهادي شاكر، تطاوين 3200</span>
+                    <span className="text-gold text-sm">(اضغط لرؤية الموقع)</span>
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      className="h-4 w-4 text-gold" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      stroke="currentColor"
+                    >
+                      <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeWidth={2} 
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
+                      />
+                    </svg>
+                  </a>
+                </div>
               </p>
               <p className="mb-2 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
