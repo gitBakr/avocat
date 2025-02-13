@@ -1,14 +1,6 @@
 services:
-  - type: web
+  - type: static
     name: avocat
-    env: node
     buildCommand: npm install && npm run build
-    startCommand: npm start
-    envVars:
-      - key: NODE_VERSION
-        value: 18.0.0
-    staticPublishPath: ./dist
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html 
+    publishDir: dist
+    branch: main 
