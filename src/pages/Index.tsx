@@ -165,8 +165,8 @@ const Index = () => {
             initial={{ scale: 1.1, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1 }}
-            src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
-            alt="صورة المكتب"
+            src="/images/hero.jpg"
+            alt="مكتب المحاماة"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/50"></div>
@@ -191,14 +191,22 @@ const Index = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="slide-up">
             <h2 className="text-3xl font-bold mb-6">من نحن</h2>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-gray-600 leading-relaxed mb-6">
               نحن مكتب محاماة رائد يقدم خدمات قانونية شاملة بأعلى معايير الجودة والاحترافية. يضم فريقنا نخبة من المحامين ذوي الخبرة.
             </p>
+            {/* Image supplémentaire */}
+            <div className="glass-card rounded-lg overflow-hidden mb-6">
+              <img
+                src="/images/av1.jpg"
+                alt="مكتب المحاماة"
+                className="w-full h-[200px] object-cover"
+              />
+            </div>
           </div>
           <div className="glass-card rounded-lg overflow-hidden">
             <img
-              src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952"
-              alt="صورة المكتب"
+              src="/images/about.jpg"
+              alt="مكتب المحاماة الأستاذ الصادق فرحات موسى"
               className="w-full h-[400px] object-cover"
             />
           </div>

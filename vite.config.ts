@@ -14,6 +14,12 @@ export default defineConfig({
     port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
     host: '0.0.0.0'
   },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    emptyOutDir: true
+  },
+  base: '/',
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
