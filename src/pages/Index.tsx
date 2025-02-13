@@ -514,6 +514,64 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Digital Transformation Section */}
+      <section className="container mx-auto py-16 px-4 bg-gradient-to-br from-gold/5 to-gold/10">
+        <motion.div
+          className="max-w-4xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="text-3xl font-bold text-center mb-8">التحول الرقمي للمهنيين</h2>
+          
+          <div className="bg-white rounded-lg shadow-lg p-8">
+            <p className="text-gray-700 leading-relaxed text-right mb-6">
+              في عصر التكنولوجيا الرقمية، أصبح وجودك على الإنترنت ضرورياً لتطوير نشاطك المهني. تلتزم جمعيتنا بمرافقة المهنيين التونسيين في تحولهم الرقمي من خلال حل متاح للجميع.
+            </p>
+            
+            <div className="bg-gold/10 rounded-lg p-6 mb-6">
+              <p className="text-gray-800 font-bold text-center text-xl mb-2">
+                30 دينار تونسي فقط في السنة
+              </p>
+              <p className="text-gray-600 text-center">
+                نقدم لكم فرصة إنشاء وتطوير تواجدكم على الإنترنت، مما يتيح لكم زيادة ظهوركم والوصول إلى عملاء جدد.
+              </p>
+            </div>
+
+            <p className="text-gray-700 leading-relaxed text-right mb-6">
+              يضع فريقنا من المتخصصين في المعلوماتية خبرتهم في خدمتكم لضمان واجهة رقمية احترافية تتناسب مع احتياجاتكم.
+            </p>
+
+            <p className="text-gray-700 leading-relaxed text-right mb-6">
+              انضموا إلى مجتمعنا المتنامي من المهنيين التونسيين الذين اختاروا بالفعل التواجد الفعال والميسور على الإنترنت.
+            </p>
+
+            <p className="text-gold font-bold text-center text-xl">
+              معاً، نبني مستقبلكم الرقمي!
+            </p>
+
+            <div className="text-center mt-8">
+              <a
+                href="mailto:contact@raouane.com"
+                className="inline-flex items-center gap-2 bg-gold hover:bg-gold-hover text-white px-8 py-4 rounded-lg transition-all duration-300"
+              >
+                <span>تواصل معنا للمزيد من المعلومات</span>
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-5 w-5" 
+                  viewBox="0 0 20 20" 
+                  fill="currentColor"
+                >
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
       {/* Location Section */}
       <section className="container mx-auto py-16 px-4 bg-white">
         <motion.h2
