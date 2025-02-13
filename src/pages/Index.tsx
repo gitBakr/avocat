@@ -110,7 +110,7 @@ const Index = () => {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-8">
-              {["about", "services", "testimonials", "faq", "contact"].map((item, index) => (
+              {["about", "services", "testimonials", "faq", "appointment", "contact"].map((item, index) => (
                 <motion.a
                   key={item}
                   href={`#${item}`}
@@ -124,6 +124,7 @@ const Index = () => {
                   {item === "services" && "خدماتنا"}
                   {item === "testimonials" && "آراء العملاء"}
                   {item === "faq" && "الأسئلة الشائعة"}
+                  {item === "appointment" && "حجز موعد"}
                   {item === "contact" && "اتصل بنا"}
                 </motion.a>
               ))}
@@ -167,28 +168,74 @@ const Index = () => {
               transition={{ duration: 0.3 }}
             >
               <div className="flex flex-col space-y-4">
-                <a href="#about" className="hover:text-gold transition-colors">من نحن</a>
-                <a href="#services" className="hover:text-gold transition-colors">خدماتنا</a>
-                <a href="#testimonials" className="hover:text-gold transition-colors">آراء العملاء</a>
-                <a href="#faq" className="hover:text-gold transition-colors">الأسئلة الشائعة</a>
-                <a href="#contact" className="hover:text-gold transition-colors">اتصل بنا</a>
+                <a 
+                  href="#about" 
+                  className="hover:text-gold transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  من نحن
+                </a>
+                <a 
+                  href="#services" 
+                  className="hover:text-gold transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  خدماتنا
+                </a>
+                <a 
+                  href="#testimonials" 
+                  className="hover:text-gold transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  آراء العملاء
+                </a>
+                <a 
+                  href="#faq" 
+                  className="hover:text-gold transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  الأسئلة الشائعة
+                </a>
+                <a 
+                  href="#appointment" 
+                  className="hover:text-gold transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  حجز موعد
+                </a>
+                <a 
+                  href="#contact" 
+                  className="hover:text-gold transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  اتصل بنا
+                </a>
                 
                 {/* Mobile Language Switcher */}
                 <div className="flex space-x-2 pt-4 border-t border-gray-700">
                   <button
-                    onClick={() => setCurrentLang('ar')}
+                    onClick={() => {
+                      setCurrentLang('ar');
+                      setIsMenuOpen(false);
+                    }}
                     className={`px-2 py-1 rounded ${currentLang === 'ar' ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
                   >
                     العربية
                   </button>
                   <button
-                    onClick={() => setCurrentLang('fr')}
+                    onClick={() => {
+                      setCurrentLang('fr');
+                      setIsMenuOpen(false);
+                    }}
                     className={`px-2 py-1 rounded ${currentLang === 'fr' ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
                   >
                     Français
                   </button>
                   <button
-                    onClick={() => setCurrentLang('en')}
+                    onClick={() => {
+                      setCurrentLang('en');
+                      setIsMenuOpen(false);
+                    }}
                     className={`px-2 py-1 rounded ${currentLang === 'en' ? 'bg-gold text-white' : 'hover:bg-gray-100'}`}
                   >
                     English
@@ -267,7 +314,7 @@ const Index = () => {
       </section>
 
       {/* Services Section */}
-      <section className="container mx-auto py-16 px-4 bg-gray-50" id="services">
+      <section className="container mx-auto py-16 px-4" id="services">
         <motion.h2
           className="text-3xl font-bold text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
@@ -281,15 +328,14 @@ const Index = () => {
           {services.map((service, index) => (
             <motion.div
               key={index}
-              className="bg-gradient-to-br from-white to-gray-100 p-6 rounded-lg hover:shadow-xl transition-all duration-300 border border-gray-200"
+              className="bg-gray-100 rounded-lg p-6 shadow-sm border border-gray-200 hover:bg-white transition-colors duration-300"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
             >
-              <div className="text-4xl mb-4">{service.icon}</div>
-              <h3 className="text-xl font-bold mb-3">{service.title}</h3>
+              <div className="text-4xl mb-4 text-gold">{service.icon}</div>
+              <h3 className="text-xl font-bold mb-2">{service.title}</h3>
               <p className="text-gray-600">{service.description}</p>
             </motion.div>
           ))}
@@ -466,7 +512,7 @@ const Index = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="container mx-auto py-16 px-4 bg-gray-50" id="faq">
+      <section className="container mx-auto py-16 px-4 bg-white" id="faq">
         <motion.h2
           className="text-3xl font-bold text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
@@ -501,7 +547,7 @@ const Index = () => {
           ].map((item, index) => (
             <motion.div
               key={index}
-              className="bg-white rounded-lg shadow-sm p-6 border border-gray-200"
+              className="bg-gray-100 rounded-lg shadow-sm p-6 border border-gray-200 hover:bg-white transition-colors duration-300"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -515,7 +561,7 @@ const Index = () => {
       </section>
 
       {/* Digital Transformation Section */}
-      <section className="container mx-auto py-16 px-4 bg-gradient-to-br from-gold/5 to-gold/10">
+      <section className="container mx-auto py-16 px-4 bg-gray-50">
         <motion.div
           className="max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
